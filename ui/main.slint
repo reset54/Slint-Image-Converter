@@ -1,21 +1,24 @@
-import { VerticalBox } from "std-widgets.slint";
-import { FileQueue } from "file_queue.slint";
+import { VerticalBox, ScrollView } from "std-widgets.slint";
 import { ControlPanel } from "control_panel.slint";
 import { FileList } from "file_list.slint";
 
 export component AppWindow inherits Window {
     title: "Slint Image Converter";
-    width: 600px;
-    height: 600px;
+
+    // Window will try to fit content but stays within these bounds
+    preferred-width: 600px;
+    preferred-height: 700px;
+    min-width: 500px;
+    min-height: 400px;
 
     in-out property <[string]> file-list: [];
+    in-out property <bool> has-files: false;
     in-out property <float> alpha-value <=> controls.alpha-val;
     in-out property <bool> use-alpha-channel <=> controls.use-alpha;
     in-out property <string> selected-format <=> controls.selected-format;
     in-out property <string> status-text: "Ready";
     in-out property <bool> is-processing: false;
     in-out property <float> progress: 0.0;
-    in-out property <bool> has-files: false;
 
     callback add-files();
     callback convert-requested();
@@ -24,27 +27,37 @@ export component AppWindow inherits Window {
 
     VerticalBox {
         padding: 20px;
-        spacing: 20px;
+        spacing: 15px;
 
         Text {
             text: "Conversion Queue";
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
+            horizontal-alignment: center;
         }
 
-        FileQueue {
-            files: root.file-list;
+        // Scrollable area that expands
+        Rectangle {
+            background: #1a1a1a;
+            border-radius: 6px;
+            vertical-stretch: 1; // This ensures it takes all available space
+            clip: true;
+
+            ScrollView {
+                viewport-height: file-list-view.preferred-height;
+
+                file-list-view := FileList {
+                    files: root.file-list;
+                    processing: root.is-processing;
+                    remove-clicked(idx) => { root.remove-file(idx); }
+                }
+            }
         }
 
-        FileList {
-            files: root.file-list;
-            processing: root.is-processing;
-            remove-clicked(idx) => { root.remove-file(idx); }
-        }
-
+        // Bottom section stays fixed
         controls := ControlPanel {
             processing: root.is-processing;
-            has-files: root.file-list.length > 0;
+            has-files: root.has-files;
             add-pressed => { root.add-files() }
             run-pressed => { root.convert-requested() }
             clear-pressed => { root.clear-pressed() }

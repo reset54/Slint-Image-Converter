@@ -1,4 +1,4 @@
-import { ScrollView, Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
 
 export component FileList inherits VerticalBox {
     in property <[string]> files;
@@ -6,45 +6,46 @@ export component FileList inherits VerticalBox {
 
     callback remove-clicked(int);
 
+    padding: 10px;
     spacing: 5px;
+    alignment: start; // Critical: packs items from top to bottom
 
     Text {
         text: "Files in queue: " + root.files.length;
         color: #aaa;
         font-size: 14px;
+        horizontal-alignment: center;
     }
 
-    Rectangle {
-        background: #252525;
-        border-radius: 4px;
-        min-height: 100px;
+    // Spacer between title and list
+    Rectangle { height: 5px; }
 
-        ScrollView {
-            viewport-height: root.files.length * 40px;
+    for file-path[i] in root.files : Rectangle {
+        height: 35px;
+        background: #303030;
+        border-radius: 2px;
 
-            for file-path[i] in root.files : HorizontalBox {
-                height: 40px;
-                padding-left: 10px;
-                padding-right: 10px;
-                spacing: 10px;
+        HorizontalBox {
+            padding-left: 10px;
+            padding-right: 10px;
+            spacing: 10px;
 
-                Text {
-                    text: file-path;
-                    vertical-alignment: center;
-                    overflow: elide;
-                    font-size: 13px;
-                }
+            Text {
+                text: file-path;
+                vertical-alignment: center;
+                overflow: elide;
+                font-size: 13px;
+                color: #eee;
+            }
 
-                // Filler to push the button to the right
-                Rectangle {}
+            Rectangle {} // Spacer
 
-                Button {
-                    text: "×";
-                    width: 25px;
-                    height: 25px;
-                    enabled: !root.processing;
-                    clicked => { root.remove-clicked(i); }
-                }
+            Button {
+                text: "×";
+                width: 25px;
+                height: 25px;
+                enabled: !root.processing;
+                clicked => { root.remove-clicked(i); }
             }
         }
     }
