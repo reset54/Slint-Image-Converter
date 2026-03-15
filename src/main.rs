@@ -9,7 +9,7 @@ pub mod processor {
 }
 
 pub mod image_converter_app;
-
+pub mod callbacks;
 use anyhow::Result;
 use crate::image_converter_app::ImageConverterApp;
 

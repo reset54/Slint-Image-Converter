@@ -4398,6 +4398,7 @@ dependencies = [
  "anyhow",
  "image",
  "rfd",
+ "serde",
  "slint",
  "slint-build",
 ]

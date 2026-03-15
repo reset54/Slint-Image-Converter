@@ -1,4 +1,4 @@
-use image::{DynamicImage, Rgba};
+use image::{DynamicImage};
 use crate::core::types::AlphaMode;
 
 

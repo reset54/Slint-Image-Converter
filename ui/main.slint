@@ -1,6 +1,7 @@
 import { VerticalBox } from "std-widgets.slint";
 import { FileQueue } from "file_queue.slint";
 import { ControlPanel } from "control_panel.slint";
+import { FileList } from "file_list.slint";
 
 export component AppWindow inherits Window {
     title: "Slint Image Converter";
@@ -14,10 +15,12 @@ export component AppWindow inherits Window {
     in-out property <string> status-text: "Ready";
     in-out property <bool> is-processing: false;
     in-out property <float> progress: 0.0;
+    in-out property <bool> has-files: false;
 
     callback add-files();
     callback convert-requested();
     callback clear-pressed();
+    callback remove-file(int);
 
     VerticalBox {
         padding: 20px;
@@ -31,6 +34,12 @@ export component AppWindow inherits Window {
 
         FileQueue {
             files: root.file-list;
+        }
+
+        FileList {
+            files: root.file-list;
+            processing: root.is-processing;
+            remove-clicked(idx) => { root.remove-file(idx); }
         }
 
         controls := ControlPanel {

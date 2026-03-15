@@ -1,6 +1,7 @@
 use std::path::PathBuf;
+use serde::{Deserialize, Serialize};
 
-
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum AlphaMode {
     Keep,
     Remove,
@@ -8,7 +9,7 @@ pub enum AlphaMode {
     Constant(u8),
 }
 
-
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConversionConfig {
     pub output_format: String,
     pub quality: u8,
