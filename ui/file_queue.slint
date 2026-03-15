@@ -1,0 +1,19 @@
+import { ListView, HorizontalBox } from "std-widgets.slint";
+
+export component FileQueue inherits Rectangle {
+    in property <[string]> files;
+    background: #2a2a2a;
+    border-radius: 4px;
+
+    ListView {
+        for entry in root.files : HorizontalLayout {
+            padding: 5px;
+            Text {
+                text: entry;
+                color: #e0e0e0;
+                font-size: 14px;
+                overflow: elide;
+            }
+        }
+    }
+}

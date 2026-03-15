@@ -1,0 +1,66 @@
+import { Button, Slider, VerticalBox, HorizontalBox, ComboBox } from "std-widgets.slint";
+
+export component ControlPanel inherits VerticalBox {
+    in-out property <float> alpha-val <=> sld.value;
+    in-out property <string> selected-format: "png";
+    in property <bool> processing;
+    in property <bool> has-files;
+
+    callback add-pressed();
+    callback run-pressed();
+    callback clear-pressed();
+
+    spacing: 15px;
+
+    HorizontalBox {
+        padding: 0;
+        spacing: 10px;
+        Button {
+            text: "Add Images";
+            clicked => { root.add-pressed() }
+        }
+        Button {
+            text: "Clear List";
+            enabled: root.has-files && !root.processing;
+            clicked => { root.clear-pressed() }
+        }
+    }
+
+    VerticalBox {
+        padding: 0;
+        spacing: 5px;
+        Text { text: "Output Format:"; color: #aaa; font-size: 14px; }
+        ComboBox {
+            model: ["png", "jpg", "webp", "bmp", "tga"];
+            current-value: root.selected-format;
+            selected(val) => { root.selected-format = val; }
+        }
+    }
+
+    VerticalBox {
+        padding: 0;
+        spacing: 5px;
+        Text { text: "Alpha Channel Level:"; color: #aaa; font-size: 14px; }
+        HorizontalBox {
+            padding: 0;
+            sld := Slider {
+                minimum: 0.0;
+                maximum: 1.0;
+                value: 1.0;
+            }
+            Text {
+                text: Math.round(root.alpha-val * 100) + "%";
+                width: 40px;
+                horizontal-alignment: right;
+                vertical-alignment: center;
+            }
+        }
+    }
+
+    Button {
+        text: "Process Batch";
+        primary: true;
+        enabled: !root.processing && root.has-files;
+        clicked => { root.run-pressed() }
+    }
+}

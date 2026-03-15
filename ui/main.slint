@@ -1,0 +1,49 @@
+import { VerticalBox } from "std-widgets.slint";
+import { FileQueue } from "file_queue.slint";
+import { ControlPanel } from "control_panel.slint";
+
+export component AppWindow inherits Window {
+    title: "Slint Image Converter";
+    width: 600px;
+    height: 600px;
+
+    in-out property <[string]> file-list: [];
+    in-out property <float> alpha-value <=> controls.alpha-val;
+    in-out property <string> selected-format <=> controls.selected-format;
+    in-out property <string> status-text: "Ready";
+    in-out property <bool> is-processing: false;
+    in-out property <float> progress: 0.0;
+
+    callback add-files();
+    callback convert-requested();
+    callback clear-pressed();
+
+    VerticalBox {
+        padding: 20px;
+        spacing: 20px;
+
+        Text {
+            text: "Conversion Queue";
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        FileQueue {
+            files: root.file-list;
+        }
+
+        controls := ControlPanel {
+            processing: root.is-processing;
+            has-files: root.file-list.length > 0;
+            add-pressed => { root.add-files() }
+            run-pressed => { root.convert-requested() }
+            clear-pressed => { root.clear-pressed() }
+        }
+
+        Text {
+            text: root.status-text;
+            horizontal-alignment: center;
+            color: root.is-processing ? #3366ff : #00aa00;
+        }
+    }
+}

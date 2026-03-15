@@ -1,0 +1,13 @@
+[package]
+name = "slint-image-converter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+slint = "1.9"
+image = "0.25"
+anyhow = "1.0"
+rfd = "0.14"
+
+[build-dependencies]
+slint-build = "1.9"
