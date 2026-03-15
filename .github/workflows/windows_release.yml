@@ -24,6 +24,8 @@ env:
 jobs:
   build-windows:
     runs-on: windows-latest
+    env:
+      CARGO_INCREMENTAL: 1
 
     steps:
       - name: Checkout repository
@@ -35,7 +37,7 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Build Binary
+      - name: Build Windows Binary
         run: cargo build --release --locked
 
       - name: Upload Artifact
