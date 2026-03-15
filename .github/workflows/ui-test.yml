@@ -1,0 +1,32 @@
+name: UI Testing Pipeline (Windows)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ui/**'
+      - 'src/tests/**'
+      - 'src/callbacks.rs'
+      - 'src/image_converter_app.rs'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'ui/**'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ui-validation:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run UI Tests
+        run: cargo test tests::ui_tests -- --test-threads=1
