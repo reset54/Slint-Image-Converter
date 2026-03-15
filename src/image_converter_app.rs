@@ -88,13 +88,18 @@ impl ImageConverterApp {
         ui.set_is_processing(true);
         ui.set_progress(0.0);
 
-        let alpha_level = (ui.get_alpha_value() * 255.0) as u8;
-        let selected_ext = ui.get_selected_format().to_string();
+        // Determine alpha mode based on checkbox
+        let alpha_mode = if ui.get_use_alpha_channel() {
+            let level = (ui.get_alpha_value() * 255.0) as u8;
+            crate::core::types::AlphaMode::Constant(level)
+        } else {
+            crate::core::types::AlphaMode::Keep
+        };
 
         let config = ConversionConfig {
-            output_format: selected_ext,
-            quality: 90,
-            alpha_mode: AlphaMode::Constant(alpha_level),
+            output_format: ui.get_selected_format().to_string(),
+            quality: 90, // Default for now
+            alpha_mode,
             resize_width: None,
             resize_height: None,
         };
@@ -102,10 +107,10 @@ impl ImageConverterApp {
         let mut tasks = Vec::new();
         for i in 0..model.row_count() {
             if let Some(file_str) = model.row_data(i) {
-                tasks.push(PathBuf::from(file_str.as_str()));
+                tasks.push(std::path::PathBuf::from(file_str.as_str()));
             }
         }
 
-        ConversionWorker::spawn_processing_thread(ui_handle.clone(), config, tasks);
+        ConversionWorker::spawn_processing_thread(ui_handle, config, tasks);
     }
 }

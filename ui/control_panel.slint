@@ -1,7 +1,11 @@
-import { Button, Slider, VerticalBox, HorizontalBox, ComboBox } from "std-widgets.slint";
+import { Button, VerticalBox } from "std-widgets.slint";
+import { ActionsPanel } from "actions_panel.slint";
+import { FormatSelector } from "format_selector.slint";
+import { AlphaSettings } from "alpha_settings.slint";
 
 export component ControlPanel inherits VerticalBox {
-    in-out property <float> alpha-val <=> sld.value;
+    in-out property <float> alpha-val: 1.0;
+    in-out property <bool> use-alpha: false;
     in-out property <string> selected-format: "png";
     in property <bool> processing;
     in property <bool> has-files;
@@ -10,51 +14,22 @@ export component ControlPanel inherits VerticalBox {
     callback run-pressed();
     callback clear-pressed();
 
-    spacing: 15px;
+    spacing: 20px;
 
-    HorizontalBox {
-        padding: 0;
-        spacing: 10px;
-        Button {
-            text: "Add Images";
-            clicked => { root.add-pressed() }
-        }
-        Button {
-            text: "Clear List";
-            enabled: root.has-files && !root.processing;
-            clicked => { root.clear-pressed() }
-        }
+    ActionsPanel {
+        has-files: root.has-files;
+        processing: root.processing;
+        add-pressed => { root.add-pressed() }
+        clear-pressed => { root.clear-pressed() }
     }
 
-    VerticalBox {
-        padding: 0;
-        spacing: 5px;
-        Text { text: "Output Format:"; color: #aaa; font-size: 14px; }
-        ComboBox {
-            model: ["png", "jpg", "webp", "bmp", "tga"];
-            current-value: root.selected-format;
-            selected(val) => { root.selected-format = val; }
-        }
+    FormatSelector {
+        current-format <=> root.selected-format;
     }
 
-    VerticalBox {
-        padding: 0;
-        spacing: 5px;
-        Text { text: "Alpha Channel Level:"; color: #aaa; font-size: 14px; }
-        HorizontalBox {
-            padding: 0;
-            sld := Slider {
-                minimum: 0.0;
-                maximum: 1.0;
-                value: 1.0;
-            }
-            Text {
-                text: Math.round(root.alpha-val * 100) + "%";
-                width: 40px;
-                horizontal-alignment: right;
-                vertical-alignment: center;
-            }
-        }
+    AlphaSettings {
+        use-alpha <=> root.use-alpha;
+        alpha-val <=> root.alpha-val;
     }
 
     Button {

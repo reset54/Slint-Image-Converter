@@ -1,0 +1,19 @@
+import { VerticalBox, ComboBox } from "std-widgets.slint";
+
+export component FormatSelector inherits VerticalBox {
+    in-out property <string> current-format;
+
+    spacing: 5px;
+
+    Text {
+        text: "Output Format:";
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    ComboBox {
+        model: ["png", "jpg", "webp", "bmp", "tga"];
+        current-value: root.current-format;
+        selected(val) => { root.current-format = val; }
+    }
+}

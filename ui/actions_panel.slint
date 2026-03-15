@@ -1,0 +1,22 @@
+import { Button, HorizontalBox } from "std-widgets.slint";
+
+export component ActionsPanel inherits HorizontalBox {
+    in property <bool> has-files;
+    in property <bool> processing;
+
+    callback add-pressed();
+    callback clear-pressed();
+
+    spacing: 10px;
+
+    Button {
+        text: "Add Images";
+        clicked => { root.add-pressed() }
+    }
+
+    Button {
+        text: "Clear List";
+        enabled: root.has-files && !root.processing;
+        clicked => { root.clear-pressed() }
+    }
+}

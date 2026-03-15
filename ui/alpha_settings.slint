@@ -1,0 +1,45 @@
+import { CheckBox, Slider, VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+export component AlphaSettings inherits VerticalBox {
+    in-out property <bool> use-alpha;
+    in-out property <float> alpha-val;
+
+    spacing: 5px;
+
+    HorizontalBox {
+        padding: 0;
+        CheckBox {
+            text: "Override Alpha Channel";
+            checked: root.use-alpha;
+            toggled => { root.use-alpha = !root.use-alpha; }
+        }
+
+        Text {
+            text: root.use-alpha ? "[ 32-bit: RGB + A ]" : "[ 24-bit: RGB ]";
+            color: root.use-alpha ? #3366ff : #888;
+            font-size: 11px;
+            vertical-alignment: center;
+            horizontal-alignment: right;
+        }
+    }
+
+    HorizontalBox {
+        padding: 0;
+        opacity: root.use-alpha ? 1.0 : 0.3;
+
+        Slider {
+            enabled: root.use-alpha;
+            minimum: 0.0;
+            maximum: 1.0;
+            value: root.alpha-val;
+            changed(v) => { root.alpha-val = v; }
+        }
+
+        Text {
+            text: Math.round(root.alpha-val * 100) + "%";
+            width: 40px;
+            horizontal-alignment: right;
+            vertical-alignment: center;
+        }
+    }
+}

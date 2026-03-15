@@ -30,7 +30,6 @@ impl ImageConverter {
 mod tests {
     use super::*;
     use crate::core::types::AlphaMode;
-    use std::fs;
 
     #[test]
     fn test_process_file_invalid_path() {

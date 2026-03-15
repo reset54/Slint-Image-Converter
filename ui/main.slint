@@ -9,6 +9,7 @@ export component AppWindow inherits Window {
 
     in-out property <[string]> file-list: [];
     in-out property <float> alpha-value <=> controls.alpha-val;
+    in-out property <bool> use-alpha-channel <=> controls.use-alpha;
     in-out property <string> selected-format <=> controls.selected-format;
     in-out property <string> status-text: "Ready";
     in-out property <bool> is-processing: false;

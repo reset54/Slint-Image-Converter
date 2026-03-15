@@ -1,4 +1,4 @@
-use image::{DynamicImage, GenericImageView, ImageBuffer, Rgba};
+use image::{DynamicImage, Rgba};
 use crate::core::types::AlphaMode;
 
 
@@ -9,37 +9,30 @@ impl AlphaProcessor {
     pub fn process(img: DynamicImage, mode: &AlphaMode) -> DynamicImage {
         match mode {
             AlphaMode::Keep => img,
+
             AlphaMode::Remove => {
+                // to_rgb8() effectively removes the alpha channel
                 DynamicImage::ImageRgb8(img.to_rgb8())
             }
-            AlphaMode::Premultiply => {
-                let (width, height) = img.dimensions();
-                let mut output = ImageBuffer::new(width, height);
-                let rgba_img = img.to_rgba8();
 
-                for (x, y, pixel) in rgba_img.enumerate_pixels() {
-                    let alpha = pixel[3] as f32 / 255.0;
-                    let r = (pixel[0] as f32 * alpha) as u8;
-                    let g = (pixel[1] as f32 * alpha) as u8;
-                    let b = (pixel[2] as f32 * alpha) as u8;
-                    
-                    output.put_pixel(x, y, Rgba([r, g, b, pixel[3]]));
-                }
-
-                DynamicImage::ImageRgba8(output)
-            }
             AlphaMode::Constant(level) => {
-                let (width, height) = img.dimensions();
-                let mut output = ImageBuffer::new(width, height);
-                let rgba_img = img.to_rgba8();
-
-                for (x, y, pixel) in rgba_img.enumerate_pixels() {
-                    let mut new_pixel = *pixel;
-                    new_pixel[3] = *level;
-                    output.put_pixel(x, y, new_pixel);
+                let mut rgba = img.to_rgba8();
+                // Direct modification of the buffer is faster than put_pixel
+                for pixel in rgba.pixels_mut() {
+                    pixel[3] = *level;
                 }
+                DynamicImage::ImageRgba8(rgba)
+            }
 
-                DynamicImage::ImageRgba8(output)
+            AlphaMode::Premultiply => {
+                let mut rgba = img.to_rgba8();
+                for pixel in rgba.pixels_mut() {
+                    let alpha = pixel[3] as f32 / 255.0;
+                    pixel[0] = (pixel[0] as f32 * alpha) as u8;
+                    pixel[1] = (pixel[1] as f32 * alpha) as u8;
+                    pixel[2] = (pixel[2] as f32 * alpha) as u8;
+                }
+                DynamicImage::ImageRgba8(rgba)
             }
         }
     }
