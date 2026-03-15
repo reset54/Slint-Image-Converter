@@ -11,3 +11,12 @@ rfd = "0.14"
 
 [build-dependencies]
 slint-build = "1.9"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+
+# Speed up dependencies compilation
+[profile.release.package."*"]
+opt-level = 2

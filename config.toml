@@ -1,0 +1,6 @@
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+[build]
+# Optional: Use incremental compilation for even faster development builds
+incremental = true
