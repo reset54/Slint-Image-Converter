@@ -16,17 +16,20 @@ Prerequisites
 
 ## Build and Run
 
-    1. Clone the repository:
+### 1. Clone repository:
 ```bash
-git clone [https://github.com/reset54/Slint-Image-Converter.git](https://github.com/reset54/Slint-Image-Converter.git)
+git clone https://github.com/reset54/Slint-Image-Converter.git
 ```
+
+### 2. Build the project:
 ```bash
 cd Slint-Image-Converter
 ```
-### 2. Build the project:
+
 ```bash
 cargo build
 ```
+
 ### 3. Run the application:
 ```bash
 cargo run
