@@ -1,0 +1,26 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="CleanupComponents">
+      <Component Id="ApplicationShortcutCleanUp" Directory="ApplicationProgramsFolder" Guid="e1f8ea9a-5773-419b-b5be-207a2628873c">
+        <RemoveFolder Id="CleanUpShortCut" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\reset54\SlintImageConverter"
+                       Name="installed"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+
+      <Component Id="CleanupMainFolder" Directory="INSTALLFOLDER" Guid="bcde1234-5678-90ab-cdef-1234567890ab">
+        <RegistryValue Root="HKCU"
+                       Key="Software\reset54\SlintImageConverter"
+                       Name="cleanup"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+        <RemoveFile Id="PurgeAppFiles" Name="*.*" On="uninstall" />
+        <RemoveFolder Id="PurgeAppFolder" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

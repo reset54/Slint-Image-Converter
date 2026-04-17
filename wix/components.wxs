@@ -1,0 +1,18 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Executable" Guid="d196be7b-cfea-4511-8c4d-272bafb4bb56">
+        <File Id="AppEXE"
+              Source="target/release/slint-image-converter.exe"
+              KeyPath="yes" />
+
+        <Shortcut Id="StartMenuShortcut"
+                  Directory="ApplicationProgramsFolder"
+                  Name="Slint Image Converter"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Icon="converter.ico"
+                  Advertise="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

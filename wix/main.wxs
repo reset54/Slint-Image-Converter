@@ -1,0 +1,32 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+    <Package Name="Slint Image Converter"
+             Manufacturer="reset54"
+             Version="1.0.0.0"
+             UpgradeCode="03e94582-7412-4e12-8d5a-9c43821764c2"
+             Language="1033"
+             Scope="perMachine">
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+        <MediaTemplate EmbedCab="yes" />
+
+
+        <WixVariable Id="WixUILicenseRtf" Value="wix/license.rtf" />
+
+        <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+
+
+        <Icon Id="converter.ico" SourceFile="wix/converter.ico" />
+        <Property Id="ARPPRODUCTICON" Value="converter.ico" />
+
+
+        <Feature Id="MainFeature" Title="Slint Image Converter" Level="1">
+            <ComponentGroupRef Id="ProductComponents" />
+
+            <ComponentGroupRef Id="CleanupComponents" />
+        </Feature>
+
+    </Package>
+</Wix>
