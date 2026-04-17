@@ -27,3 +27,56 @@ target
 
 # .gitignore
 cmt_msg.txt
+
+# --- WiX Toolset ---
+# Final installer output
+*.msi
+*.msm
+*.msp
+
+# WiX debug symbols
+*.wixpdb
+
+# Local NuGet extensions and WiX cache
+.wix/
+wix/.extension/
+
+# Intermediate build folders
+obj/
+bin/
+
+# Temporary project files (if script fails to cleanup)
+temp_wix_dep.csproj
+
+# logs
+*.log
+
+# --- Linux / Unix / macOS ---
+# Compiled Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.out
+*.app
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.directory

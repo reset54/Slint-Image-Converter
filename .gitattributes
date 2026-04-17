@@ -1,5 +1,48 @@
-* text=auto eol=lf
-*.rs text eol=lf
-*.slint text eol=lf
-*.md text eol=lf
-*.toml text eol=lf
+# --- Windows Scripts ---
+*.ps1      text eol=crlf
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+
+# --- Image Assets (поскольку это Image Converter) ---
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.webp     binary
+*.svg      text eol=lf
+*.ico      binary
+
+# --- Rust & Dependencies ---
+Cargo.lock text eol=lf
+*.exe      binary
+*.dll      binary
+*.pdb      binary
+
+# --- Fonts ---
+*.ttf      binary
+*.otf      binary
+*.woff     binary
+*.woff2    binary
+
+# --- WiX Toolset ---
+*.wxs      text diff=xml
+*.wxi      text diff=xml
+*.wixproj  text diff=xml
+*.msi      binary
+*.wixpdb   binary
+*.bmp      binary
+*.rtf      text eol=crlf
+
+# --- Linux Shell Scripts ---
+*.sh       text eol=lf
+*.bash     text eol=lf
+*.py       text eol=lf
+
+# --- Linux Desktop Integration ---
+*.desktop  text eol=lf
+*.service  text eol=lf
+
+# --- Configuration (usually LF on Unix) ---
+*.conf     text eol=lf
+*.yaml     text eol=lf
+*.yml      text eol=lf
