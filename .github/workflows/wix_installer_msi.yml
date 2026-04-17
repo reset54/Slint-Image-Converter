@@ -1,0 +1,78 @@
+name: Build Windows wix installer MSI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - main
+      - master
+    paths:
+      - 'wix/**'
+      - '!wix/docs/**'
+      - '!wix/**/*.md'
+      - '!wix/**/*.rtf'
+      - '!wix/**/*.txt'
+      - '.github/workflows/wix_installer_msi.yml'
+  pull_request:
+    paths:
+      - 'wix/**'
+      - '!wix/docs/**'
+      - '!wix/**/*.md'
+      - '!wix/**/*.rtf'
+      - '!wix/**/*.txt'
+      - '.github/workflows/wix_installer_msi.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    name: Build Windows MSI
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build Rust binary
+        run: cargo build --release
+
+      - name: Setup .NET Environment
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install WiX Toolset v5
+        run: dotnet tool install --global wix --version 5.0.2
+
+      - name: Build MSI Package
+        run: powershell .\wix\build_msi.ps1
+
+      # Placeholder for Codesigning step
+      # - name: Sign MSI Package
+      # NOTE: is not realised yet
+
+      - name: Upload MSI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SlintImageConverter-Installer
+          path: SlintImageConverter.msi
+          retention-days: 5
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: SlintImageConverter.msi
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
