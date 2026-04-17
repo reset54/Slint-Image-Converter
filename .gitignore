@@ -22,7 +22,6 @@ target
 
 
 # Added by cargo
-
 /target
 
 # .gitignore
@@ -40,6 +39,7 @@ cmt_msg.txt
 # Local NuGet extensions and WiX cache
 .wix/
 wix/.extension/
+wix/reg_backups/
 
 # Intermediate build folders
 obj/
